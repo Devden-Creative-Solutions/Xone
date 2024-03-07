@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "729530910090",
+    "firebase_url": "https://sample-3c5ec-default-rtdb.firebaseio.com",
+    "project_id": "sample-3c5ec",
+    "storage_bucket": "sample-3c5ec.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729530910090:android:ce0439eb036220e039b473",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.Trilib"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABeiAxc8OcD_VGESNAa0eXBizXVYhh15I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
