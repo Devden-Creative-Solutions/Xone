@@ -843,7 +843,7 @@ namespace TriLibCore.Samples
                         var materials = new Material[meshFilter.sharedMesh.subMeshCount];
                         if (material == null)
                         {
-                            material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                            material = new Material(Shader.Find("Hidden/PointCloud_GL"));
                         }
                         for (var i = 0; i < materials.Length; i++)
                         {

@@ -30,7 +30,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     public GameObject exploreButton, floorMap;
     [Header("Mesh And Materials")]
     public GameObject LocalGround;
-    internal GameObject spawnObjectFromFile, ModelFromFile, ground, floor, ceiling;
+    public GameObject spawnObjectFromFile, ModelFromFile, ground, floor, ceiling;
     public Material wallMaterial, ceilingMaterial, groundMaterial;
     [HideInInspector]
     public List<Material> wallMaterials, ceilingMaterials, groundMaterials;
@@ -39,7 +39,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     [Header("Lists")]
     public List<Map> maps;
     public List<string> links;
-    [HideInInspector]
+
     public List<HandleButtonComponents> buttonHandler, spawnPosButtonHandler;
     [HideInInspector]
     public List<Transform> spawnPoints;
@@ -49,10 +49,10 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     internal GameObject Ground;
     internal byte[] customBytes;
     internal string filename;
-    internal SkinnedMeshRenderer skinnedMesh;
-    internal Vector3 intialpos, intialRot,startPos,startRot;
+    internal Vector3 intialpos, intialRot, startPos, startRot;
     internal Data[] datas;
     internal string res;
+    internal Vector3 scaleMultiplayer = new Vector3(3.8f, 3.8f, 3.8f);
     private void Awake()
     {
         if (Instance == null)
@@ -180,7 +180,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
                 load._modelUrl.text = buttonLink;
                 load.LoadModelFromURLWithDialogValues();
                 listScreen.gameObject.SetActive(false);
-                ResetPlayer(intialpos,intialRot);
+                ResetPlayer(intialpos, intialRot);
 
             });
         }
@@ -210,7 +210,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
             {
                 startPos = spawnPoints[val].position;
                 startRot = spawnPoints[val].eulerAngles;
-                ResetPlayer(startPos,startRot);
+                ResetPlayer(startPos, startRot);
                 spanPointScreen.enabled = false;
 
             });
@@ -225,7 +225,9 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
                 meshRenderer.GetMaterials(wallMaterials);
                 for (int i = 0; i < wallMaterials.Count; i++)
                 {
-                    wallMaterials[i] = wallMaterial;
+                    var material = new Material(Shader.Find("Universal Render Pipeline/Lit")); ;
+                    material.color = wallMaterials[i].color;
+                    wallMaterials[i] = material;
                 }
                 meshRenderer.SetMaterials(wallMaterials);
             }
@@ -287,6 +289,10 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
             ApplyMaterial(ground, groundMaterials, groundMaterial);
         }
     }
+    public void AdjustSize()
+    {
+        ModelFromFile.transform.parent.localScale = scaleMultiplayer;
+    }
     public void GenerateSpawnPoints()
     {
         if (spawnObjectFromFile != null)
@@ -299,7 +305,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
             floorMap.SetActive(false);
         }
     }
-    public void ResetPlayer(Vector3 pos,Vector3 rot)
+    public void ResetPlayer(Vector3 pos, Vector3 rot)
     {
         player.enabled = false;
         player.transform.localPosition = pos;

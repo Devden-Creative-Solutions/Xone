@@ -47,6 +47,7 @@ public class FileBrowserTest : MonoBehaviour
             fetchModelDataCountFromFireBase.loadingScreen.enabled = false;
         }
     }
+    [HideInInspector]
     public byte[] bytes;
     void OnFilesSelected(string[] filePaths)
     {
@@ -63,7 +64,7 @@ public class FileBrowserTest : MonoBehaviour
         fetchModelDataCountFromFireBase.UploadToFirebase();
         SaveData();
     }
-    public string lastUpload, nameOfFile;
+    internal string lastUpload, nameOfFile;
     public void SaveData()
     {
         var dummymap = new Map();

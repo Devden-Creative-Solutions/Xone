@@ -24,7 +24,6 @@ namespace TriLibCore.Samples
         private RectTransform _loadingBarOutline;
         [SerializeField]
         private TextMeshProUGUI _loadingText;
-
         /// <summary>
         /// Help box wrapper.
         /// </summary>
@@ -47,7 +46,7 @@ namespace TriLibCore.Samples
         ///  Model URL loading Input Field.
         /// </summary>
         [SerializeField]
-        internal InputField _modelUrl;
+        public InputField _modelUrl;
 
         /// <summary>
         /// Animation playback slider.
@@ -276,9 +275,8 @@ namespace TriLibCore.Samples
         /// <param name="value">The loading progress, ranging from 0 to 1.</param>
         protected virtual void OnProgress(AssetLoaderContext assetLoaderContext, float value)
         {
-            //_loadingBar.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, (Screen.width-200) * value);
+            //_loadingBar.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Screen.width * value);
             _loadingBar.GetComponent<Image>().fillAmount = value;
-
         }
 
         /// <summary>Event that is triggered when any error occurs.</summary>
@@ -288,7 +286,7 @@ namespace TriLibCore.Samples
             Debug.LogError(contextualizedError);
             RootGameObject = null;
             _loadingText.text = "Download Complete";
-            //SetLoading(false);
+            SetLoading(false);
         }
 
         /// <summary>Event that is triggered when the Model Meshes and hierarchy are loaded.</summary>
@@ -306,7 +304,7 @@ namespace TriLibCore.Samples
         protected virtual void OnMaterialsLoad(AssetLoaderContext assetLoaderContext)
         {
             _loadingText.text = "Download Complete";
-            // SetLoading(false);
+            //SetLoading(false);
         }
 
         /// <summary>

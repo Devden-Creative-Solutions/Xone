@@ -387,7 +387,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 2633456.5}
+  m_AnchoredPosition: {x: 0, y: 2191442.2}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &28671896
@@ -5778,10 +5778,22 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
       - m_Target: {fileID: 1961212752}
         m_TargetAssemblyTypeName: FetchModelDataCountFromFireBase, Assembly-CSharp
         m_MethodName: GenerateSpawnPoints
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1961212752}
+        m_TargetAssemblyTypeName: FetchModelDataCountFromFireBase, Assembly-CSharp
+        m_MethodName: AdjustSize
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16025,8 +16037,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bytes: 
-  lastUpload: 
-  nameOfFile: 
 --- !u!114 &1961212752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16053,6 +16063,11 @@ MonoBehaviour:
   exploreButton: {fileID: 705245913}
   floorMap: {fileID: 1756792518}
   LocalGround: {fileID: 1823915320}
+  spawnObjectFromFile: {fileID: 0}
+  ModelFromFile: {fileID: 0}
+  ground: {fileID: 0}
+  floor: {fileID: 0}
+  ceiling: {fileID: 0}
   wallMaterial: {fileID: 2100000, guid: cfb80f2cc24a3f94db5aad2bd790186c, type: 2}
   ceilingMaterial: {fileID: 2100000, guid: f02e22b7ef0ae92438374ba81bbd1ea3, type: 2}
   groundMaterial: {fileID: 2100000, guid: 6a527f1cb09df81429a6f8aa75f3ee02, type: 2}

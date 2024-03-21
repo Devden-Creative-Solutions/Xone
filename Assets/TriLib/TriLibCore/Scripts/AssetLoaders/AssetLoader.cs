@@ -440,7 +440,7 @@ namespace TriLibCore
 
         /// <summary>Processes the Model from the given context and begin to build the Game Objects.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
-
+        
         private static void ProcessModel(AssetLoaderContext assetLoaderContext)
         {
             if (assetLoaderContext.RootModel != null)
@@ -458,16 +458,15 @@ namespace TriLibCore
                     SetupRig(assetLoaderContext);
                 }
                 assetLoaderContext.RootGameObject.isStatic = assetLoaderContext.Options.Static;
-                //FetchModelDataCountFromFireBase.Instance.GenerateSpawnPoints();
             }
             assetLoaderContext.OnLoad?.Invoke(assetLoaderContext);
-
+            
         }
 
         /// <summary>Configures the context Model LODs (levels-of-detail) if there are any.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
         /// <param name="model">The Model containing the LOD data.</param>
-
+        
         private static void SetupModelLod(AssetLoaderContext assetLoaderContext, IModel model)
         {
             if (model.Children != null && model.Children.Count > 0)
@@ -491,7 +490,7 @@ namespace TriLibCore
                         }
                         renderers.AddRange(assetLoaderContext.GameObjects[child].GetComponentsInChildren<Renderer>());
                     }
-
+                    
                 }
                 if (lodModels.Count > 1)
                 {
@@ -519,19 +518,19 @@ namespace TriLibCore
 
         /// <summary>Builds the Game Object Converts hierarchy paths.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
-
+        
         private static void BuildGameObjectsPaths(AssetLoaderContext assetLoaderContext)
         {
             foreach (var value in assetLoaderContext.GameObjects.Values)
             {
                 assetLoaderContext.GameObjectPaths.Add(value, value.transform.BuildPath(assetLoaderContext.RootGameObject.transform));
-
+                
             }
         }
 
         /// <summary>Configures the context Model rigging if there is any.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
-
+        
         private static void SetupRig(AssetLoaderContext assetLoaderContext)
         {
             var animations = assetLoaderContext.RootModel.AllAnimations;
@@ -572,7 +571,7 @@ namespace TriLibCore
                             break;
                         }
                 }
-
+                
                 if (animationClips != null)
                 {
                     if (assetLoaderContext.Options.AnimationClipMappers != null)
@@ -581,7 +580,7 @@ namespace TriLibCore
                         foreach (var animationClipMapper in assetLoaderContext.Options.AnimationClipMappers)
                         {
                             animationClips = animationClipMapper.MapArray(assetLoaderContext, animationClips);
-
+                            
                             if (animationClips != null && animationClips.Length > 0)
                             {
                                 break;
@@ -787,7 +786,7 @@ namespace TriLibCore
         /// <param name="rootModel">The root Model.</param>
         /// <param name="model">The Model to convert.</param>
         /// <param name="isRootGameObject">Is this the first node in the Model hierarchy?</param>
-
+        
         private static void CreateModel(AssetLoaderContext assetLoaderContext, Transform parentTransform, IRootModel rootModel, IModel model, bool isRootGameObject)
         {
             var newGameObject = new GameObject(model.Name);
@@ -822,7 +821,7 @@ namespace TriLibCore
                 foreach (var userProperty in model.UserProperties)
                 {
                     assetLoaderContext.Options.UserPropertiesMapper.OnProcessUserData(assetLoaderContext, newGameObject, userProperty.Key, userProperty.Value);
-
+                    
                 }
             }
             if (isRootGameObject)
@@ -882,7 +881,7 @@ namespace TriLibCore
         /// <summary>Configures the given Model skinning if there is any.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
         /// <param name="model">The Model containing the bones.</param>
-
+        
         private static void SetupModelBones(AssetLoaderContext assetLoaderContext, IModel model)
         {
             var loadedGameObject = assetLoaderContext.GameObjects[model];
@@ -902,7 +901,7 @@ namespace TriLibCore
                     skinnedMeshRenderer.bones = gameObjectBones;
                     skinnedMeshRenderer.rootBone = assetLoaderContext.Options.RootBoneMapper.Map(assetLoaderContext, gameObjectBones);
                 }
-
+                
             }
             if (model.Children != null && model.Children.Count > 0)
             {
@@ -1004,7 +1003,7 @@ namespace TriLibCore
                         {
                             var lipSyncMapping = meshGameObject.AddComponent<LipSyncMapping>();
                             lipSyncMapping.VisemeToBlendTargets = visemeToBlendTargets;
-
+                            
                             break;
                         }
                     }
@@ -1027,7 +1026,6 @@ namespace TriLibCore
                     if ((bones != null && bones.Count > 0 || geometryGroupBlendShapeGeometryBindings != null && geometryGroupBlendShapeGeometryBindings.Count > 0) && assetLoaderContext.Options.AnimationType != AnimationType.None)
                     {
                         var skinnedMeshRenderer = meshGameObject.AddComponent<SkinnedMeshRenderer>();
-                        FetchModelDataCountFromFireBase.Instance.skinnedMesh = skinnedMeshRenderer;
                         skinnedMeshRenderer.sharedMesh = geometryGroup.Mesh;
                         skinnedMeshRenderer.enabled = !assetLoaderContext.Options.ImportVisibility || meshModel.Visibility;
                         if (bones != null && bones.Count > 0)
@@ -1046,8 +1044,6 @@ namespace TriLibCore
                 if (renderer == null)
                 {
                     var meshFilter = meshGameObject.AddComponent<MeshFilter>();
-
-
                     meshFilter.sharedMesh = geometryGroup.Mesh;
                     for (int i = 0; i < meshFilter.mesh.subMeshCount; i++)
                     {
@@ -1057,7 +1053,6 @@ namespace TriLibCore
                     if (!assetLoaderContext.Options.LoadPointClouds)
                     {
                         var meshRenderer = meshGameObject.AddComponent<MeshRenderer>();
-                        //FetchModelDataCountFromFireBase.Instance.meshRenderer = meshRenderer;
                         meshRenderer.enabled = !assetLoaderContext.Options.ImportVisibility || meshModel.Visibility;
                         renderer = meshRenderer;
                         var meshCollider = meshGameObject.AddComponent<MeshCollider>();
@@ -1149,7 +1144,6 @@ namespace TriLibCore
                 FetchModelDataCountFromFireBase.Instance.Ground = meshGameObject;
                 FetchModelDataCountFromFireBase.Instance.SetPerimeter();
             }
-
         }
 
         /// <summary>
@@ -1170,14 +1164,14 @@ namespace TriLibCore
 
         /// <summary>Loads the root Model.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
-
+        
         private static void LoadModel(AssetLoaderContext assetLoaderContext)
         {
             SetupModelLoading(assetLoaderContext);
-
+            
         }
 
-
+        
         private static void SetupModelLoading(AssetLoaderContext assetLoaderContext)
         {
             if (assetLoaderContext.Stream == null && string.IsNullOrWhiteSpace(assetLoaderContext.Filename))
@@ -1237,7 +1231,7 @@ namespace TriLibCore
 
         /// <summary>Processes the root Model.</summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
-
+        
         private static void ProcessRootModel(AssetLoaderContext assetLoaderContext)
         {
             ProcessModel(assetLoaderContext);
@@ -1336,7 +1330,7 @@ namespace TriLibCore
         /// Processes Model Renderers.
         /// </summary>
         /// <param name="assetLoaderContext">The Asset Loader Context reference. Asset Loader Context contains the Model loading data.</param>
-
+        
         private static void ProcessMaterialRenderers(AssetLoaderContext assetLoaderContext)
         {
             var materialMapperContexts = new MaterialMapperContext[assetLoaderContext.RootModel.AllMaterials.Count];
@@ -1357,7 +1351,7 @@ namespace TriLibCore
                         materialMapperContext.MaterialMapper = materialMapper;
                         materialMapper.Map(materialMapperContext);
                         ApplyMaterialToRenderers(materialMapperContext);
-
+                        
                         //materialMapperContext.AddPostProcessingActionToMainThread(ApplyMaterialToRenderers, materialMapperContext);
                         break;
                     }
