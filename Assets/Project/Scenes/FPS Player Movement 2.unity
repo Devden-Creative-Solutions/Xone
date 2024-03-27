@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.39113063, g: 0.43148115, b: 0.48613214, a: 1}
+  m_IndirectSpecularColor: {r: 0.39348093, g: 0.43437514, b: 0.48837757, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1111,39 +1111,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 147583251}
   m_CullTransparentMesh: 0
---- !u!21 &153032726
-Material:
-  serializedVersion: 8
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: Hidden/OutlinePlus
-  m_Shader: {fileID: 4800000, guid: f0e778543e4d8a34295b7995426495da, type: 3}
-  m_Parent: {fileID: 0}
-  m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - OUTLINE_USE_DEPTH
-  - OUTLINE_USE_NORMALS
-  m_InvalidKeywords: []
-  m_LightmapFlags: 4
-  m_EnableInstancingVariants: 0
-  m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
-  disabledShaderPasses: []
-  m_LockedProperties: 
-  m_SavedProperties:
-    serializedVersion: 3
-    m_TexEnvs:
-    - _MainTex:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    m_Ints: []
-    m_Floats: []
-    m_Colors: []
-  m_BuildTextureStacks: []
 --- !u!1 &153958298
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,8 +1906,9 @@ MonoBehaviour:
   minFOV: 20
   maxFOV: 60
   zoomSpeed: 0.1
-  cameraSensitivity: 5
-  playerSpeed: 5
+  cameraSensitivity: 7
+  playerWalkSpeed: 0
+  playerRunSpeed: 0
   joystick: {fileID: 1273285014}
   playerCharacterController: {fileID: 203586324}
 --- !u!143 &203586324
@@ -5479,6 +5447,7 @@ GameObject:
   m_Component:
   - component: {fileID: 705507995}
   - component: {fileID: 705507994}
+  - component: {fileID: 705507996}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -5563,6 +5532,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1838190703}
   m_LocalEulerAnglesHint: {x: 19.242, y: -36.877, z: -19.404}
+--- !u!114 &705507996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705507993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &709760618
 GameObject:
   m_ObjectHideFlags: 0
@@ -7744,7 +7736,7 @@ MonoBehaviour:
   maxDepthThreshold: 10
   minNormalsThreshold: 0
   maxNormalsThreshold: 0.75
-  material: {fileID: 153032726}
+  material: {fileID: 0}
 --- !u!1 &1029471233
 GameObject:
   m_ObjectHideFlags: 0
@@ -9638,6 +9630,7 @@ MonoBehaviour:
   handle: {fileID: 1456164344}
   moveThreshold: 1
   joystickType: 0
+  currentPointerId: 0
 --- !u!1 &1293139923
 GameObject:
   m_ObjectHideFlags: 0
@@ -10620,7 +10613,7 @@ ReflectionProbe:
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 10, y: 10, z: 10}
+  m_BoxSize: {x: 100, y: 100, z: 100}
   m_BoxOffset: {x: 0, y: 0, z: 0}
   m_NearClip: 0.3
   m_FarClip: 1000
@@ -15011,14 +15004,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a652ed01ef0fe443b6127902a0ea9da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maps: []
   bytes: 
-  lastUpload: 
-  nameOfFile: 
-  dummymap:
-    Name: 
-    DateAndTime: 
-  link: []
 --- !u!114 &1961212752
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15032,16 +15018,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 203586323}
-  ModelCount: 0
-  intalModals: 0
-  buttonprefab: {fileID: 2431782709681366376, guid: f375e33adede244498444deff55da8b2, type: 3}
-  scrollViewContent: {fileID: 540497020}
   load: {fileID: 1530325702}
   startScreen: {fileID: 1546272166}
   listScreen: {fileID: 302266024}
   joystickScreen: {fileID: 685979612}
   loadingScreen: {fileID: 1381585159}
+  spanPointScreen: {fileID: 0}
+  mapsPrefab: {fileID: 0}
+  spawnPositionPrefab: {fileID: 0}
+  scrollViewContent: {fileID: 540497021}
+  spawnPointContent: {fileID: 0}
   exploreButton: {fileID: 705245913}
+  LocalGround: {fileID: 1823915320}
+  spawnObjectFromFile: {fileID: 0}
+  ModelFromFile: {fileID: 0}
+  ground: {fileID: 0}
+  floor: {fileID: 0}
+  ceiling: {fileID: 0}
+  wallMaterial: {fileID: 0}
+  ceilingMaterial: {fileID: 0}
+  groundMaterial: {fileID: 0}
+  wallMaterials: []
+  ceilingMaterials: []
+  groundMaterials: []
   onClearDependency:
     m_PersistentCalls:
       m_Calls:
@@ -15081,14 +15080,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  buttons: []
-  buttonsHandler: []
-  ModelFromFile: {fileID: 0}
-  Ground: {fileID: 0}
-  LocalGround: {fileID: 1823915320}
-  wallMatrial: {fileID: 2100000, guid: 6b3dcff091a89854fa0e0e9783f42c97, type: 2}
-  floorCellingMatrial: {fileID: 2100000, guid: 3ce6ba366b9b65f41a7ce81c0872f23b, type: 2}
-  intialpos: {x: 0, y: 0, z: 0}
+  maps: []
+  links: []
+  buttonHandler: []
+  spawnPosButtonHandler: []
+  spawnPoints: []
+  spawnPointsName: []
 --- !u!4 &1961212753
 Transform:
   m_ObjectHideFlags: 0

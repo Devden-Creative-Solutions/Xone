@@ -304,6 +304,7 @@ namespace TriLibCore.Samples
         protected virtual void OnMaterialsLoad(AssetLoaderContext assetLoaderContext)
         {
             _loadingText.text = "Download Complete";
+            //FetchModelDataCountFromFireBase.Instance.AdjustSize();
             //SetLoading(false);
         }
 

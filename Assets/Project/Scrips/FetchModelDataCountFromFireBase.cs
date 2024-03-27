@@ -15,10 +15,12 @@ using System;
 using Proyecto26;
 using Firebase.Extensions;
 using System.Linq;
+using UnityEngine.Networking;
 
 public class FetchModelDataCountFromFireBase : MonoBehaviour
 {
     public static FetchModelDataCountFromFireBase Instance;
+    public GameObject internetCheckCanvas;
     [Header("Player")]
     public FPSController player;
     public TriLibCore.Samples.AssetViewer load;
@@ -27,7 +29,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     public Canvas listScreen, joystickScreen, loadingScreen, spanPointScreen;
     public HandleButtonComponents mapsPrefab, spawnPositionPrefab;
     public Transform scrollViewContent, spawnPointContent;
-    public GameObject exploreButton, floorMap;
+    public Button exploreButton;
     [Header("Mesh And Materials")]
     public GameObject LocalGround;
     public GameObject spawnObjectFromFile, ModelFromFile, ground, floor, ceiling;
@@ -41,7 +43,7 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     public List<string> links;
 
     public List<HandleButtonComponents> buttonHandler, spawnPosButtonHandler;
-    [HideInInspector]
+    
     public List<Transform> spawnPoints;
     [HideInInspector]
     public List<string> spawnPointsName;
@@ -52,9 +54,12 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     internal Vector3 intialpos, intialRot, startPos, startRot;
     internal Data[] datas;
     internal string res;
-    internal Vector3 scaleMultiplayer = new Vector3(3.8f, 3.8f, 3.8f);
+    internal Vector3 scaleMultiplayer = new Vector3(3.2f, 3.2f, 3.2f);
     private void Awake()
     {
+        CheckInternetConnection();
+
+
         if (Instance == null)
             Instance = this;
         else
@@ -62,6 +67,76 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
             Destroy(this);
         }
     }
+
+    void CheckInternetConnection()
+    {
+        StartCoroutine(CheckInternetConnectionCR(val =>
+        {
+            if (val)
+            {
+                CheckAppStall();
+                internetCheckCanvas.SetActive(false);
+            }
+            else
+            {
+                internetCheckCanvas.SetActive(true);
+            }
+        }));
+    }
+
+    void CheckAppStall()
+    {
+        StartCoroutine(Get("https://devdencreative.com/DevEnv/Xone/AppStall.json", msg =>
+        {
+            AppStall appStall = JsonUtility.FromJson<AppStall>(msg);
+
+            if (appStall.stop)
+            {
+#if UNITY_EDITOR
+                UnityEditor.EditorApplication.ExitPlaymode();
+#else
+                Application.Quit();
+#endif
+            }
+        }));
+    }
+
+    IEnumerator CheckInternetConnectionCR(Action<bool> action)
+    {
+        UnityWebRequest www = UnityWebRequest.Get("https://www.google.com");
+        yield return www.SendWebRequest();
+
+        Debug.Log(www.result);
+        if (www.result!=UnityWebRequest.Result.Success)
+        {
+            action(false);
+        }
+        else
+        {
+            action(true);
+        }
+    }
+
+    IEnumerator Get(string uri, Action<string> callback)
+    {
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(uri))
+        {
+            // Request and wait for the desired page.
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("App Integrity Failed");
+                CheckInternetConnection();
+                yield break;
+            }
+            else
+            {
+                callback?.Invoke(webRequest.downloadHandler.text);
+            }
+        }
+    }
+
     private async void Start()
     {
         var dependensyStatus = await FirebaseApp.CheckAndFixDependenciesAsync();
@@ -69,8 +144,6 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
         {
             onClearDependency?.Invoke();
         }
-        intialpos = player.transform.position;
-        intialRot = player.transform.eulerAngles;
         FetchDataFromFirebase();
     }
     public void SetPerimeter()
@@ -242,8 +315,16 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
                 }
                 spawncount = spawnPoints.Count;
             }
-            exploreButton.SetActive(true);
-
+            exploreButton.gameObject.SetActive(true);
+            var val = 0;
+            var mesh = spawnPoints[val].GetComponent<MeshRenderer>();
+            exploreButton.onClick.AddListener(() =>
+            {
+            var pos = new Vector3(mesh.bounds.center.x, 1.1f, mesh.bounds.center.z);
+                startPos = pos;
+                startRot = spawnPoints[val].eulerAngles;
+                ResetPlayer(startPos, startRot);
+            });
 
         }, 1);
     }
@@ -291,18 +372,18 @@ public class FetchModelDataCountFromFireBase : MonoBehaviour
     }
     public void AdjustSize()
     {
-        ModelFromFile.transform.parent.localScale = scaleMultiplayer;
+        ModelFromFile.transform.localScale = scaleMultiplayer;
     }
     public void GenerateSpawnPoints()
     {
         if (spawnObjectFromFile != null)
         {
             GenerateSpawnPoints(spawnPoints);
-            floorMap.SetActive(true);
+            //floorMap.SetActive(true);
         }
         else
         {
-            floorMap.SetActive(false);
+            //floorMap.SetActive(false);
         }
     }
     public void ResetPlayer(Vector3 pos, Vector3 rot)
@@ -327,4 +408,10 @@ public class Data
 {
     public string name;
     public string bucket;
+}
+
+[System.Serializable]
+public class AppStall
+{
+    public bool stop;
 }
